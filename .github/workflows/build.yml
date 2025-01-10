@@ -51,7 +51,7 @@ jobs:
             echo "version=$version" >> $env:GITHUB_OUTPUT
             $versionSuffix = $packageVersionArray[1];
             echo "version-suffix=$versionSuffix" >> $env:GITHUB_OUTPUT
-            $nupkgFileName = '${{ env.packageName }}.$packageVersion.nupkg'
+            $nupkgFileName = '${{ env.packageName }}.${ packageVersion }.nupkg'
             echo "nupkgFileName=$nupkgFileName" >> $env:GITHUB_OUTPUT
           
       - id: verify-sufix
