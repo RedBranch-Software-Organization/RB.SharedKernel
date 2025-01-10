@@ -68,7 +68,6 @@ jobs:
         echo "${{ needs.get-version.outputs.package-version }}"
         echo "${{ needs.get-version.outputs.version }}"
         echo "${{ needs.get-version.outputs.version-suffix }}"
-        echo "${{ needs.get-version.outputs.nupkg-fileName }}"
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
