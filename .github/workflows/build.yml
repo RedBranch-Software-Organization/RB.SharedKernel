@@ -5,7 +5,7 @@ on:
         - 'v*.*.*'
 env:
   packageName: 'RB.SharedKernel'
-  artifactPath: '/home/runner/work/bin/Release'
+  artifactPath: '/home/runner/work/RB.SharedKernel'
 
 jobs:
   get-version:
@@ -87,4 +87,4 @@ jobs:
     - name: Add github source
       run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
     - name: Push
-      run: dotnet nuget push "${{ env.artifactPath }}/${{ needs.get-version.outputs.nupkgFileName }}" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
+      run: dotnet nuget push "${{ env.artifactPath }}/package/release/${{ needs.get-version.outputs.nupkgFileName }}" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
