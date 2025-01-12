@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    
+    <OutputType>Library</OutputType>
     <PackageId>RB.SharedKernel</PackageId>
     <Authors>RedBranch Software</Authors>
     <Company>RedBranch Software</Company>
