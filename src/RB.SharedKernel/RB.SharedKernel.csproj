@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageDescription>Repository for RB.SharedKernel NuGet Package</PackageDescription>
+    <PackageId>RB.SharedKernel</PackageId>
+    <Authors>RedBranch Software</Authors>
+    <Company>RedBranch Software</Company>
+    <PackageDescription>Domain SharedKernel files</PackageDescription>
     <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel</RepositoryUrl>
   </PropertyGroup>
-
 </Project>
