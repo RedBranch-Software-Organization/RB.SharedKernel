@@ -19,4 +19,7 @@ Global
 		{3791EC25-8574-4045-9BB9-865DA8EF5853}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3791EC25-8574-4045-9BB9-865DA8EF5853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DDDF2C97-A76F-4418-9272-57C0693B5A8B}
+	EndGlobalSection
 EndGlobal
