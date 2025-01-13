@@ -1,10 +1,15 @@
-﻿namespace RB.SharedKernel.Tests;
+﻿using RB.SharedKernel.Tests.Arrange;
 
-public class UnitTest1
+namespace RB.SharedKernel.Tests;
+
+public class EntityTests
 {
     [Fact]
-    public void Test1()
+    public void EntityId_Visible()
     {
-
+        Guid actual = Guid.NewGuid();
+        var account = new Account(actual);
+        var expected = account.Id;
+        Assert.Equal(actual, expected);
     }
 }
