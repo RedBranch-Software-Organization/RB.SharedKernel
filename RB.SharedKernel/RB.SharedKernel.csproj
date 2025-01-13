@@ -13,6 +13,6 @@
     <Authors>RedBranch Software</Authors>
     <Company>RedBranch Software</Company>
     <PackageDescription>Shared Kernel for RedBranch Software projects</PackageDescription>
-    <RepositoryUrl>https://github.com/RedBranchSoftware/RB.SharedKernel.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
   </PropertyGroup>
 </Project>
