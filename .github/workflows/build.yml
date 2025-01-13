@@ -6,6 +6,7 @@ on:
 env:
   packageName: 'RB.SharedKernel'
   artifactPath: '/home/runner/work/RB.SharedKernel'
+  workingDirectory: 'RB.SharedKernel'
 
 jobs:
   get-version:
@@ -76,12 +77,13 @@ jobs:
           9.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: RB.SharedKernel
+      working-directory: ${{ env.workingDirectory}}
     - name: Build
       run: dotnet build --no-restore
-      working-directory: RB.SharedKernel
+      working-directory: ${{ env.workingDirectory}}
     - name: Pack
-      run: dotnet pack ${{ env.projectPath }} -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
+      run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
+      working-directory: ${{ env.workingDirectory}}
     - name: Add github source
       run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
     - name: Push
