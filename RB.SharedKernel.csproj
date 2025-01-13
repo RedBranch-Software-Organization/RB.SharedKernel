@@ -1,12 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <IsPackable>true</IsPackable>
-    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-		<RootNamespace>$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
 
     <OutputType>Library</OutputType>
     <PackageId>RB.SharedKernel</PackageId>
@@ -15,4 +12,5 @@
     <PackageDescription>Shared Kernel for RedBranch Software projects</PackageDescription>
     <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
   </PropertyGroup>
+
 </Project>
