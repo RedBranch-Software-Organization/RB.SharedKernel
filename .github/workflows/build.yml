@@ -4,7 +4,7 @@ on:
     tags:
         - 'v*.*.*'
 env:
-  projectPath: '/RB.SharedKernel/RB.SharedKernel.csproj'
+  projectPath: '/src/RB.SharedKernel/RB.SharedKernel.csproj'
   packageName: 'RB.SharedKernel'
   artifactPath: '/home/runner/work/RB.SharedKernel'
 
@@ -77,8 +77,10 @@ jobs:
           9.0.x
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: src/RB.SharedKernel
     - name: Build
-      run: dotnet build --project ${{ env.projectPath }} --no-restore
+      run: dotnet build --no-restore
+      working-directory: src/RB.SharedKernel
     - name: Pack
       run: dotnet pack ${{ env.projectPath }} -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
     - name: Add github source
