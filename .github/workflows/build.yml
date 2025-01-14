@@ -1,86 +1,19 @@
-name: Build, Pack & Push Nuget Package
+name: Build, Pack & Push Nuget Package Manual
 on:
-  push:
-    tags:
-        - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      package-version:
+        description: 'Package Version'
+        required: true
+        type: string
 env:
   packageName: 'RB.SharedKernel'
   artifactPath: '/home/runner/work/RB.SharedKernel'
-
 jobs:
   get-version:
-    name: Set Workflow Variables
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.find-tag.outputs.tag }}
-      package-version: ${{ steps.variables.outputs.package-version }}
-      version: ${{ steps.variables.outputs.version }}
-      version-suffix: ${{ steps.variables.outputs.version-suffix }}
     steps:
-      - name: Checkout Branch
-        uses: actions/checkout@v4
-      - id: find-tag
-        name: Find Tag
+      - name: Print Package Version
         shell: pwsh
         run: |
-          $repo="https://github.com/${{ github.repository }}"
-          echo $repo
-          $all_tags="$(git ls-remote --tags --refs --exit-code --sort=-v:refname ${repo} | grep -oE 'refs/tags/(.+)$' | sed 's/refs\/tags\///')"
-          $all_tags = $all_tags.split(' ')
-          echo "All tags: $all_tags"
-          $tag="$(printf "%s\n" $all_tags | grep -E "${query}" | tail -1)"
-          echo "Last tag: $tag"
-          if ([string]::IsNullOrEmpty($tag))
-          {
-            echo "No tag founded"
-            exit 1
-          }
-          
-          echo "tag=$tag" >> $env:GITHUB_OUTPUT
-      - id: variables
-        name: Set Variables
-        shell: pwsh
-        run: |
-            $lastTag = '${{ steps.find-tag.outputs.tag }}'
-            echo "Founded tag: $lastTag"
-            $packageVersion = $lastTag.split('v')[1]
-            echo "package-version=$packageVersion" >> $env:GITHUB_OUTPUT
-            $packageVersionArray = $packageVersion.split('-');
-            $version = $packageVersionArray[0];
-            echo "version=$version" >> $env:GITHUB_OUTPUT
-            $versionSuffix = $packageVersionArray[1];
-            echo "version-suffix=$versionSuffix" >> $env:GITHUB_OUTPUT
-      - id: verify-sufix
-        name: Verify Suffix Version
-        run: |
-          echo "Verify Suffix Version"
-
-  build_package:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: get-version
-    steps:
-    - name: Checkout Branch
-      uses: actions/checkout@v4
-    - name: Print Variables
-      run: |
-        echo "${{ needs.get-version.outputs.tag }}"
-        echo "${{ needs.get-version.outputs.package-version }}"
-        echo "${{ needs.get-version.outputs.version }}"
-        echo "${{ needs.get-version.outputs.version-suffix }}"
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: | 
-          8.0.x
-          9.0.x
-    - name: Restore dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --no-restore
-    - name: Pack
-      run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
-    - name: Add github source
-      run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
-    - name: Push
-      run: dotnet nuget push "${{ env.artifactPath }}/package/release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
+          echo "${{ github.event.inputs.package-version }}
