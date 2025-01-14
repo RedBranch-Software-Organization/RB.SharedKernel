@@ -26,10 +26,14 @@ jobs:
       - name: Validate Package Version
         run: |
           echo "Validate Package Version"
-          if (${{ github.event.inputs.package-version-text }} -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
+          if ("${{ github.event.inputs.package-version-text }}" -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
           {
             echo "Invalid package version format. The package version must be in the format v1.0.0 or v1.0.0-suffix"
             exit 1
+          }
+          else 
+          {
+            echo "Valid package version format"
           }
       - id: package-variables
         name: Set Package Variables
