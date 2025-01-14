@@ -24,6 +24,7 @@ jobs:
         run: |
           echo "${{ github.event.inputs.package-version-text }}"
       - name: Validate Package Version
+        shell: pwsh
         run: |
           echo "Validate Package Version"
           if ("${{ github.event.inputs.package-version-text }}" -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
