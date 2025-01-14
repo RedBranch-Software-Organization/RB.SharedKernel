@@ -79,10 +79,11 @@ jobs:
       - name: Publish
         run: dotnet publish --configuration Release --output ${{ env.artifactPath }}/publish
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: RB.SharedKernel_Publish_Release
           path: ${{ env.artifactPath }}/publish/release/
+          overwrite: true
 
   # pack_publish_package:
   #   name: Pack & Publish
