@@ -26,8 +26,7 @@ jobs:
       - name: Validate Package Version
         run: |
           echo "Validate Package Version"
-          $packageVersionText = "${{ github.event.inputs.package-version-text }}"
-          if ($packageVersionText -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
+          if (${{ github.event.inputs.package-version-text }} -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
           {
             echo "Invalid package version format. The package version must be in the format v1.0.0 or v1.0.0-suffix"
             exit 1
