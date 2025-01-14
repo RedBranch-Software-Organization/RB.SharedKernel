@@ -12,7 +12,7 @@ env:
 jobs:
   get-version:
     name: Set Workflow Variables
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     # outputs:
       # package-version: ${{ steps.variables.outputs.package-version }}
       # version: ${{ steps.variables.outputs.version }}
