@@ -13,14 +13,79 @@ jobs:
   get-version:
     name: Set Workflow Variables
     runs-on: ubuntu-latest
-    # outputs:
-      # package-version: ${{ steps.variables.outputs.package-version }}
-      # version: ${{ steps.variables.outputs.version }}
-      # version-suffix: ${{ steps.variables.outputs.version-suffix }}
+    outputs:
+      package-version-text: ${{ github.event.inputs.package-version-text }}
+      package-version: ${{ steps.package-variables.outputs.package-version }}
+      version: ${{ steps.package-variables.outputs.version }}
+      version-suffix: ${{ steps.package-variables.outputs.version-suffix }}
     steps:
       - name: Print Package Version
         shell: pwsh
         run: |
           echo "${{ github.event.inputs.package-version-text }}"
-      
+      - name: Validate Package Version
+        run: |
+          echo "Validate Package Version"
+          $packageVersionText = "${{ github.event.inputs.package-version-text }}"
+          if ($packageVersionText -notmatch '^v\d+\.\d+\.\d+(-\w+)?$')
+          {
+            echo "Invalid package version format. The package version must be in the format v1.0.0 or v1.0.0-suffix"
+            exit 1
+          }
+      - id: package-variables
+        name: Set Package Variables
+        shell: pwsh
+        run: |
+          $packageVersionText = "${{ github.event.inputs.package-version-text }}"
+          echo "package-version-text=$packageVersionText" >> $env:GITHUB_ENV
 
+          $packageVersion = $packageVersionText.split('v')[1]
+          echo "package-version=$packageVersion" >> $env:GITHUB_ENV
+
+          $packageVersionArray = $packageVersion.split('-');
+          $version = $packageVersionArray[0];
+          echo "version=$version" >> $env:GITHUB_ENV
+
+          $versionSuffix = $packageVersionArray[1];
+          echo "version-suffix=$versionSuffix" >> $env:GITHUB_ENV
+          
+  build_package:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: get-version
+    steps:
+      - name: Print Variables
+        run: |
+          echo "${{ needs.get-version.outputs.package-version-text }}"
+          echo "${{ needs.get-version.outputs.package-version }}"
+          echo "${{ needs.get-version.outputs.version }}"
+          echo "${{ needs.get-version.outputs.version-suffix }}"
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: | 
+            8.0.x
+            9.0.x
+      - name: Restore Dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release
+      - name: Publish
+        run: dotnet publish --configuration Release --output ${{ env.artifactPath }}/publish
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: RB.SharedKernel_Publish_Release
+          path: ${{ env.artifactPath }}/publish/release/
+
+  # pack_publish_package:
+  #   name: Pack & Publish
+  #   runs-on: ubuntu-latest
+  #   needs: build_package
+  #   steps:
+  #     - name: Pack
+  #       run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
+  #     - name: Publish
+  #       run: dotnet nuget push ${{ env.artifactPath }}/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
