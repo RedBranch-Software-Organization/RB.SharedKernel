@@ -28,7 +28,7 @@ jobs:
           $all_tags="$(git ls-remote --tags --refs --exit-code --sort=-v:refname ${repo} | grep -oE 'refs/tags/(.+)$' | sed 's/refs\/tags\///')"
           $all_tags = $all_tags.split(' ')
           echo "All tags: $all_tags"
-          $tag="$(printf "%s\n" $all_tags | grep -E "${query}" | sort -V | tail -1)"
+          $tag="$(printf "%s\n" $all_tags | grep -E "${query}" | tail -1)"
           echo "Last tag: $tag"
           if ([string]::IsNullOrEmpty($tag))
           {
