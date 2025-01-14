@@ -2,7 +2,7 @@ name: Build, Pack & Push Nuget Package Manual
 on:
   workflow_dispatch:
     inputs:
-      package-version:
+      package-version-text:
         description: 'Package Version'
         required: true
         type: string
@@ -11,9 +11,16 @@ env:
   artifactPath: '/home/runner/work/RB.SharedKernel'
 jobs:
   get-version:
-    runs-on: ubuntu-latest
+    name: Set Workflow Variables
+    runs-on: self-hosted
+    # outputs:
+      # package-version: ${{ steps.variables.outputs.package-version }}
+      # version: ${{ steps.variables.outputs.version }}
+      # version-suffix: ${{ steps.variables.outputs.version-suffix }}
     steps:
       - name: Print Package Version
         shell: pwsh
         run: |
-          echo "${{ github.event.inputs.package-version }}
+          echo "${{ github.event.inputs.package-version-text }}"
+      
+
