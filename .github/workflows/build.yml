@@ -18,7 +18,6 @@ jobs:
       package-version: ${{ steps.package-variables.outputs.package-version }}
       version: ${{ steps.package-variables.outputs.version }}
       version-suffix: ${{ steps.package-variables.outputs.version-suffix }}
-      package-publish-file-name: ${{ steps.package-variables.outputs.package-publish-file-name }}
     steps:
       - name: Print Package Version
         shell: pwsh
@@ -54,8 +53,6 @@ jobs:
           $versionSuffix = $packageVersionArray[1];
           echo "version-suffix=$versionSuffix" >> $env:GITHUB_ENV
 
-          $packagePublishFileName = "(${{ env.packageName }}.$packageVersion).replace('.', '-')"
-          echo "package-publish-file-name=$packagePublishFileName" >> $env:GITHUB_ENV
   build_package:
     name: Build
     runs-on: ubuntu-latest
@@ -67,7 +64,6 @@ jobs:
           echo "${{ needs.get-version.outputs.package-version }}"
           echo "${{ needs.get-version.outputs.version }}"
           echo "${{ needs.get-version.outputs.version-suffix }}"
-          echo "${{ needs.get-version.outputs.package-publish-file-name }}"
       - name: Checkout Branch
         uses: actions/checkout@v4
       - name: Setup .NET
@@ -85,7 +81,7 @@ jobs:
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ needs.get-version.outputs.package-publish-file-name }}
+          name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
           path: ${{ env.artifactPath }}/publish/release/
           overwrite: true
 
