@@ -14,7 +14,6 @@ jobs:
     name: Set Workflow Variables
     runs-on: ubuntu-latest
     outputs:
-      package-version-text: ${{ steps.package-variables.outputs.package-version-text }}
       package-version: ${{ steps.package-variables.outputs.package-version }}
       version: ${{ steps.package-variables.outputs.version }}
       version-suffix: ${{ steps.package-variables.outputs.version-suffix }}
@@ -41,8 +40,6 @@ jobs:
         shell: pwsh
         run: |
           $packageVersionText = "${{ github.event.inputs.package-version-text }}"
-          echo "$packageVersionText"
-          echo "package-version-text=$packageVersionText" >> $env:GITHUB_ENV
           $packageVersion = $packageVersionText.split('v')[1];
           echo "$packageVersion"
           echo "package-version=$packageVersion" >> $env:GITHUB_ENV
