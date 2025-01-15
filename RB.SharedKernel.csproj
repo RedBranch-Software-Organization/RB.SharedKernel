@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <OutputType>Library</OutputType>
+    <PackageId>RB.SharedKernel</PackageId>
+    <Authors>RedBranch Software</Authors>
+    <Company>RedBranch Software</Company>
+    <PackageDescription>Shared Kernel for RedBranch Software projects</PackageDescription>
+    <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
