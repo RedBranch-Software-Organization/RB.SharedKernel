@@ -39,18 +39,13 @@ jobs:
         name: Set Package Variables
         shell: pwsh
         run: |
-          $packageVersionText = "${{ github.event.inputs.package-version-text }}"
+          $packageVersionText = "${{ github.event.inputs.package-version-text }}";
           $packageVersion = $packageVersionText.split('v')[1];
-          echo "$packageVersion"
           echo "package-version=$packageVersion" >> $env:GITHUB_ENV
           $packageVersionArray = $packageVersion.split('-');
           $version = $packageVersionArray[0];
-          echo "$version"
           echo "version=$version" >> $env:GITHUB_ENV
-          $versionSuffix = $packageVersionArray[1];
           echo "version-suffix=$versionSuffix" >> $env:GITHUB_ENV
-          echo "$versionSuffix"
-
   build_package:
     name: Build
     runs-on: ubuntu-latest
