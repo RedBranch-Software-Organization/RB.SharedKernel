@@ -41,12 +41,12 @@ jobs:
         run: |
           $packageVersionText = "${{ github.event.inputs.package-version-text }}";
           $packageVersion = $packageVersionText.split('v')[1];
-          echo "package-version=$packageVersion" >> $env:GITHUB_ENV
+          echo "package-version=$packageVersion" >> $env:GITHUB_OUTPUT
           $packageVersionArray = $packageVersion.split('-');
           $version = $packageVersionArray[0];
-          echo "version=$version" >> $env:GITHUB_ENV
+          echo "version=$version" >> $env:GITHUB_OUTPUT
           $versionSuffix = $packageVersionArray[1];
-          echo "version-suffix=$versionSuffix" >> $env:GITHUB_ENV
+          echo "version-suffix=$versionSuffix" >> $env:GITHUB_OUTPUT
   build_package:
     name: Build
     runs-on: ubuntu-latest
