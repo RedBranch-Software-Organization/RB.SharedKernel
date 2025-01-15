@@ -42,14 +42,11 @@ jobs:
         run: |
           $packageVersionText = "${{ github.event.inputs.package-version-text }}"
           echo "package-version-text=$packageVersionText" >> $env:GITHUB_ENV
-
-          $packageVersion = $packageVersionText.split('v')[1]
+          $packageVersion = $packageVersionText.split('v')[1];
           echo "package-version=$packageVersion" >> $env:GITHUB_ENV
-
           $packageVersionArray = $packageVersion.split('-');
           $version = $packageVersionArray[0];
           echo "version=$version" >> $env:GITHUB_ENV
-
           $versionSuffix = $packageVersionArray[1];
           echo "version-suffix=$versionSuffix" >> $env:GITHUB_ENV
 
