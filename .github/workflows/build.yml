@@ -66,36 +66,22 @@ jobs:
           dotnet-version: | 
             8.0.x
             9.0.x
-      - name: Restore Dependencies
+
+
+      - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration Release
+        run: dotnet build --no-restore
       - name: Pack
-        run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }} --configuration Release
+        run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
       - name: Add github source
         run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
       - name: Push
-        run: dotnet nuget push "${{ env.artifactPath }}/package/release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
-      # - name: Upload Build Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
-      #     path: ${{ env.artifactPath }}/publish/release/
-      #     overwrite: true
-
-  # pack-push-package:
-  #   name: Pack & Push
-  #   runs-on: ubuntu-latest
-  #   needs: build-package
-  #   steps:
-  #     - name: Pack
-  #       run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }}/publish/nuget/ --configuration Release
-  #       # --no-build --no-restore '${{ env.artifactPath }}/publish/release/' 
-  #     - name: Upload Build Artifact
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
-  #         path: ${{ env.artifactPath }}/publish/nuget/
-  #         overwrite: true
-  #     - name: Push
-  #       run: dotnet nuget push ${{ env.artifactPath }}/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "bin/Release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg"  --api-key ${{ secrets.PAT }} --source "github"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
+          path: | 
+            bin/Release/*
+          overwrite: true
