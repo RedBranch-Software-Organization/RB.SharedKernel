@@ -79,8 +79,9 @@ jobs:
       - name: Create and Push Tag
         shell: pwsh
         run: |
-          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
-          git push origin ${{ needs.get-version.outputs.package-version }}
+          $repo="https://github.com/${{ github.repository }}"
+          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }} ${repo}"
+          git push origin ${{ needs.get-version.outputs.package-version }} ${repo}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
