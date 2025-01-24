@@ -79,7 +79,7 @@ jobs:
       - name: Create and Push Tag
         shell: pwsh
         run: |
-          $repo="https://github.com/${{ github.repository }}"
+          $repo="https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
           git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }} ${repo}"
           git push origin ${{ needs.get-version.outputs.package-version }} ${repo}
       - name: Upload Artifacts
