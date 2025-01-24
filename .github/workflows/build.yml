@@ -69,29 +69,24 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build --configuration Release
-      - name: Publish
-        run: dotnet publish --configuration Release --output ${{ env.artifactPath }}/publish/release/
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
-          path: ${{ env.artifactPath }}/publish/release/
-          overwrite: true
-
-  pack-push-package:
-    name: Pack & Push
-    runs-on: ubuntu-latest
-    needs: build-package
-    steps:
+        run: dotnet build --no-restore
       - name: Pack
-        run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix ${{ needs.get-version.outputs.version-suffix }} --artifacts-path ${{ env.artifactPath }}/publish/nuget/ --configuration Release
-        # --no-build --no-restore '${{ env.artifactPath }}/publish/release/' 
-      - name: Upload Build Artifact
+        run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
+      - name: Add Nuget Package Source
+        run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "RedBranch Software Packages" "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
+      - name: Push
+        run: dotnet nuget push "bin/Release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "RedBranch Software Packages"
+      - name: Create and Push Tag
+        shell: pwsh
+        run: |
+          git config user.name "GitHub Runner"
+          git config user.email ""
+          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
+          git push origin ${{ needs.get-version.outputs.package-version }}
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
-          path: ${{ env.artifactPath }}/publish/nuget/
+          path: | 
+            bin/Release/*
           overwrite: true
-      - name: Push
-        run: dotnet nuget push ${{ env.artifactPath }}/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
