@@ -77,9 +77,10 @@ jobs:
       - name: Push
         run: dotnet nuget push "bin/Release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "RedBranch Software Packages"
       - name: Create and Push Tag
+        shell: pwsh
         run: |
-          gh tag create ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
-          gh tag push ${{ needs.get-version.outputs.package-version }}
+          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
+          git push origin ${{ needs.get-version.outputs.package-version }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
