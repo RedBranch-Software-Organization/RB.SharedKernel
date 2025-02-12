@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RB.SharedKernel", "src\RB.S
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C88DD14-F956-CE84-757C-A364CCF449FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RB.SharedKernel.UnitTests", "test\RB.SharedKernel.UnitTests\RB.SharedKernel.UnitTests.csproj", "{DA2C3132-43B1-42EC-8C99-D1340F2418AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,12 +21,17 @@ Global
 		{00EED526-1892-4D43-B972-61FDCCC56AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00EED526-1892-4D43-B972-61FDCCC56AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00EED526-1892-4D43-B972-61FDCCC56AA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2C3132-43B1-42EC-8C99-D1340F2418AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2C3132-43B1-42EC-8C99-D1340F2418AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2C3132-43B1-42EC-8C99-D1340F2418AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2C3132-43B1-42EC-8C99-D1340F2418AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{00EED526-1892-4D43-B972-61FDCCC56AA3} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{DA2C3132-43B1-42EC-8C99-D1340F2418AE} = {0C88DD14-F956-CE84-757C-A364CCF449FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DDDF2C97-A76F-4418-9272-57C0693B5A8B}
