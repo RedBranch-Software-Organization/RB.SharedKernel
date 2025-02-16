@@ -12,5 +12,4 @@
     <PackageDescription>Shared Kernel for RedBranch Software projects</PackageDescription>
     <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
   </PropertyGroup>
-
 </Project>
