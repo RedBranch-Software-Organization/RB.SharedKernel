@@ -13,7 +13,7 @@ public class DateTimeExtensionsTest
     [InlineData("2025-01-01 00:00", "2025-01-01 00:00", "2025-01-01 00:00:00", true)]
     [InlineData("2025-01-01 00:00:00", "2025-01-01 00:00:00", "2025-01-01 00:00:00", true)]
     public void IsBetween_SameDates_ShouldReturnTrue(DateTime dateToCheck, DateTime startDate, DateTime endDate, bool expected)
-        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected)
+        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected);
 
     [Theory]
     [InlineData("2025-01-02", "2025-01-02", "2025-01-01", true)]
@@ -22,7 +22,7 @@ public class DateTimeExtensionsTest
     [InlineData("2025-01-01 00:00:02", "2025-01-01 00:00:03", "2025-01-01 00:00:01", true)]
     
     public void IsBetween_StartDateIsAfterEndDate_ShouldReturnTrue (DateTime dateToCheck, DateTime startDate, DateTime endDate, bool expected)
-        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected)
+        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected);
 
 
     [Theory]
@@ -32,7 +32,7 @@ public class DateTimeExtensionsTest
     [InlineData("2025-01-01 00:00:01", "2025-01-01 00:00:01", "2025-01-03T00:00:03", true)]
 
     public void IsBetween_StartDateIsBeforeEndDate_ShouldReturnTrue(DateTime dateToCheck, DateTime startDate, DateTime endDate, bool expected)
-        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected)
+        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected);
 
     [Theory]
     [InlineData("2025-01-01", "2025-01-02", "2025-01-02", false)]
@@ -48,7 +48,7 @@ public class DateTimeExtensionsTest
     [InlineData("2025-01-01 09:59:59", "2025-01-01 10:00:00", "2025-01-01 20:00:00", false)]
     [InlineData("2025-01-02 20:00:01", "2025-01-01 10:00:00", "2025-01-02 20:00:00", false)]
     public void IsBetween_DateToCheckIsOutOfRange_ShouldReturnFalse(DateTime dateToCheck, DateTime startDate, DateTime endDate, bool expected)
-        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected)
+        => IsBetweenShouldBeExpected(dateToCheck, startDate, endDate, expected);
 
     private void IsBetweenShouldBeExpected(DateTime dateToCheck, DateTime startDate, DateTime endDate, bool expected)
     {
