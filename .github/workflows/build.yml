@@ -1,4 +1,4 @@
-name: Build, Pack & Push Nuget Package Manual
+name: Build, Test, Pack & Push Nuget Package Manual
 on:
   workflow_dispatch:
     inputs:
