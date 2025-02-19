@@ -52,3 +52,4 @@ public class User : Entity<Guid>
     }
 }
 ```
+### IAggregateRoot
