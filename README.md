@@ -13,7 +13,7 @@ Repository contains custom base classes that you can use as a base for your doma
       - [Entity and IAggregateRoot](#entity-and-iaggregateroot)
     - [RB.SharedKernel.Extensions](#rbsharedkernelextensions)
       - [DateTimeExtensions](#datetimeextensions)
-      - [IsBetween](#isbetween)
+        - [IsBetween](#isbetween)
 
 ## Install
 
@@ -85,7 +85,7 @@ public class Order : Entity<Guid>, IAggregateRoot
 
 #### DateTimeExtensions
 
-#### IsBetween
+##### IsBetween
 
 ```csharp
 DateTime xMass = DateTime.Parse("2024-12-25 00:00:00")
