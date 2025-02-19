@@ -1,6 +1,17 @@
 # RB.SharedKernel
 Repository contains custom base classes that you can use as a base for your domain entities and value objects
+
 [![Build, Test, Pack & Push Nuget Package Manual](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build.yml/badge.svg)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build.yml)
+- [RB.SharedKernel](#rbsharedkernel)
+  - [Install](#install)
+  - [Version](#version)
+  - [Usage](#usage)
+    - [RB.SharedKernel](#rbsharedkernel-1)
+      - [ValueObject](#valueobject)
+      - [Entity and IAggregateRoot](#entity-and-iaggregateroot)
+    - [RB.SharedKernel.Extensions](#rbsharedkernelextensions)
+      - [DateTimeExtensions](#datetimeextensions)
+      - [IsBetween](#isbetween)
 ## Install
 ```sh
 dotnet add package RB.SharedKernel --version 0.1.0-beta.1.0
@@ -10,46 +21,68 @@ dotnet add package RB.SharedKernel --version 0.1.0-beta.1.0
 |-----------------|-----------------|
 | [![0.1.0-beta.1.0](https://img.shields.io/badge/0.1.0--beta.1.0-gray?style=flat-square)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/pkgs/nuget/RB.SharedKernel/356462575) | ![.NET 9.0](https://img.shields.io/badge/.NET%209.0-blue?style=flat-square) |
 ## Usage
-### ValueObject
+### RB.SharedKernel
+#### ValueObject
+<details>
+<summary>Show code</summary>
 ```csharp
-public class EmailAddress : ValueObject
+public class Address : ValueObject
 {
-    public string Value { get; }
+    public String Street { get; private set; }
+    public String City { get; private set; }
+    public String State { get; private set; }
+    public String Country { get; private set; }
+    public String ZipCode { get; private set; }
 
-    public EmailAddress(string value)
+    public Address() { }
+
+    public Address(string street, string city, string state, string country, string zipcode)
     {
-        if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException("Email cannot be empty.", nameof(value));
-
-        if (!Regex.IsMatch(value, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-            throw new ArgumentException("Invalid email format.", nameof(value));
-
-        Value = value;
+        Street = street;
+        City = city;
+        State = state;
+        Country = country;
+        ZipCode = zipcode;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Value.ToLower();
+        // Using a yield return statement to return each element one at a time
+        yield return Street;
+        yield return City;
+        yield return State;
+        yield return Country;
+        yield return ZipCode;
     }
-
-    public override string ToString() => Value;
 }
 ```
-### Entity
+</details>
+#### Entity and IAggregateRoot
+<details>
+<summary>Show code</summary>
 ```csharp
-public class User : Entity<Guid>
+public class Order : Entity<Guid>, IAggregateRoot
 {
-    public EmailAddress Email { get; private set; }
+    private DateTime _orderDate;
+    public Address Address { get; private set; }
 
-    public User(Guid id, EmailAddress email) : base(id)
+    public Order(Guid id, Address address) : base(id)
     {
-        Email = email ?? throw new ArgumentNullException(nameof(email));
-    }
-
-    public void ChangeEmail(EmailAddress newEmail)
-    {
-        Email = newEmail ?? throw new ArgumentNullException(nameof(newEmail));
+        _orderDate = DateTime.UtcNow;
+        Address = address;
     }
 }
 ```
-### IAggregateRoot
+</details>
+### RB.SharedKernel.Extensions
+#### DateTimeExtensions
+#### IsBetween
+<details>
+<summary>Show code</summary>
+```csharp
+DateTime xMass = DateTime.Parse("2024-12-25 00:00:00")
+DateTime newYearsEve = DateTime.Parse("2024-12-31 00:00:00");
+DateTime dateToCheck = DateTime.Parse("2024-12-28 00:00:00");
+bool isBetween = dateToCkech.IsBetween(xMass, newYearsEve);
+```
+</summary>
