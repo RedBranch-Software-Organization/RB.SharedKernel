@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0;net9.0</TargetFramework>
-    <RootNamespace>RB.SharedKernel.UnitTests</RootNamespace>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>RB.SharedKernel.UnitTests_</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
