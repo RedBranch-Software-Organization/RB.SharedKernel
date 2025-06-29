@@ -1,0 +1,94 @@
+name: \'RB.SharedKernel.MongoDb NuGet\' - Manual - Build, Test, Pack & Push Nuget Package
+on:
+  workflow_dispatch:
+    inputs:
+      package-version-text:
+        description: 'Package Version'
+        required: true
+        type: string
+env:
+  packageName: 'RB.SharedKernel.MongoDb'
+  artifactPath: '/home/runner/work/RB.SharedKernel.MongoDb'
+jobs:
+  get-version:
+    name: Set Workflow Variables
+    runs-on: ubuntu-latest
+    outputs:
+      package-version: ${{ steps.package-variables.outputs.package-version }}
+      version: ${{ steps.package-variables.outputs.version }}
+      version-suffix: ${{ steps.package-variables.outputs.version-suffix }}
+    steps:
+      - name: Print Package Version
+        shell: pwsh
+        run: |
+          echo "${{ github.event.inputs.package-version-text }}"
+      - name: Validate Package Version
+        shell: pwsh
+        run: |
+          echo "Validate Package Version"
+            if ("${{ github.event.inputs.package-version-text }}" -notmatch '^v\d+\.\d+\.\d+(-\w+(\.\d+)*)?$')
+          {
+            echo "Invalid package version format. The package version must be in the format v1.0.0 or v1.0.0-suffix"
+            exit 1
+          }
+          else 
+          {
+            echo "Valid package version format"
+          }
+      - id: package-variables
+        name: Set Package Variables
+        shell: pwsh
+        run: |
+          $packageVersionText = "${{ github.event.inputs.package-version-text }}";
+          $packageVersion = $packageVersionText.split('v')[1];
+          echo "package-version=$packageVersion" >> $env:GITHUB_OUTPUT
+          $packageVersionArray = $packageVersion.split('-');
+          $version = $packageVersionArray[0];
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+          $versionSuffix = $packageVersionArray[1];
+          echo "version-suffix=$versionSuffix" >> $env:GITHUB_OUTPUT
+  build-package:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: get-version
+    steps:
+      - name: Print Variables
+        run: |
+          echo "${{ github.event.inputs.package-version-text }}"
+          echo "${{ needs.get-version.outputs.package-version }}"
+          echo "${{ needs.get-version.outputs.version }}"
+          echo "${{ needs.get-version.outputs.version-suffix }}"
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: | 
+            8.0.x
+            9.0.x
+      - name: Restore Dependencies
+        run: dotnet restore --project src/RB.SharedKernel/RB.SharedKernel.MongoDb.csproj
+      - name: Build
+        run: dotnet build --no-restore src/RB.SharedKernel/RB.SharedKernel.MongoDb.csproj
+      - name: Run Unit Tests
+        run: dotnet test src/RB.SharedKernel/RB.SharedKernel.MongoDb.csproj
+      - name: Pack
+        run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
+      - name: Add Nuget Package Source
+        run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "RedBranch Software Packages" "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
+      - name: Push
+        run: dotnet nuget push "src/RB.SharedKernel.MongoDb/bin/Release/${{ env.packageName }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "RedBranch Software Packages"
+      - name: Create and Push Tag
+        shell: pwsh
+        run: |
+          git config user.name "GitHub Runner"
+          git config user.email ""
+          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
+          git push origin ${{ needs.get-version.outputs.package-version }}
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.packageName }}.${{ needs.get-version.outputs.package-version}}
+          path: | 
+            src/RB.SharedKernel.MongoDb/bin/Release/*
+          overwrite: true
