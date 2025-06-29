@@ -1,4 +1,4 @@
-name: \'RB.SharedKernel.MongoDb NuGet\' - Manual - Build, Test, Pack & Push Nuget Package
+name: "'RB.SharedKernel.MongoDb NuGet' - Manual - Build, Test, Pack & Push Nuget Package"
 on:
   workflow_dispatch:
     inputs:
