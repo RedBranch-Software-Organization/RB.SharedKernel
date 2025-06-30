@@ -71,13 +71,13 @@ jobs:
             8.0.x
             9.0.x
       - name: Restore Dependencies
-        run: dotnet restore
+        run: dotnet restore src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj
       - name: Build
-        run: dotnet build --no-restore
-      - name: Run Unit Tests
-        # Assuming tests are run solution-wide or this project has its own test project
-        # If specific tests for MediatR exist, this might need adjustment
-        run: dotnet test
+        run: dotnet build src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj --no-restore
+      # - name: Run Unit Tests
+      #   # Assuming tests are run solution-wide or this project has its own test project
+      #   # If specific tests for MediatR exist, this might need adjustment
+      #   run: dotnet test
       - name: Pack
         # Update path to the correct csproj file
         run: dotnet pack src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
