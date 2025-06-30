@@ -75,7 +75,7 @@ jobs:
       - name: Build
         run: dotnet build "src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj" --no-restore 
       - name: Pack
-        run: dotnet pack "src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release 
+        run: dotnet pack "src//RB.SharedKernel.MongoDb//RB.SharedKernel.MongoDb.csproj" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release 
       - name: Add Nuget Package Source
         run: dotnet nuget add source --username redbranchsoftware --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "RedBranch Software Packages" "https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json"
       - name: Push
