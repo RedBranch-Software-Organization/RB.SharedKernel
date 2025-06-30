@@ -2,7 +2,7 @@
 
 Repository contains custom base classes that you can use as a base for your domain entities and value objects
 
-[![Build, Test, Pack & Push Nuget Package Manual](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build.yml/badge.svg)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build.yml)
+[![RB.SharedKernel](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel.yml/badge.svg?branch=master&event=workflow_dispatch)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel.yml)
 
 - [RB.SharedKernel](#rbsharedkernel)
   - [Install](#install)
