@@ -71,9 +71,9 @@ jobs:
             8.0.x
             9.0.x
       - name: Restore Dependencies
-        run: dotnet restore src/RB.SharedKernel/RB.SharedKernel.MongoDb.csproj
+        run: dotnet restore src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj
       - name: Build
-        run: dotnet build --no-restore src/RB.SharedKernel/RB.SharedKernel.MongoDb.csproj
+        run: dotnet build --no-restore src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj
       - name: Pack
         run: dotnet pack -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
       - name: Add Nuget Package Source
