@@ -1,4 +1,4 @@
-name: 'RB.SharedKernel.MediatR NuGet' - Manual - Build, Test, Pack & Push Nuget Package
+name: RB.SharedKernel.MediatR
 on:
   workflow_dispatch:
     inputs:

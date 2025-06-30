@@ -1,4 +1,4 @@
-name: "'RB.SharedKernel NuGet' - Manual - Build, Test, Pack & Push Nuget Package"
+name: RB.SharedKernel
 on:
   workflow_dispatch:
     inputs:

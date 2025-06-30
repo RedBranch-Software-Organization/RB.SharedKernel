@@ -1,4 +1,4 @@
-name: "'RB.SharedKernel.MongoDb NuGet' - Manual - Build, Test, Pack & Push Nuget Package"
+name: RB.SharedKernel.MongoDb
 on:
   workflow_dispatch:
     inputs:
@@ -6,6 +6,10 @@ on:
         description: 'Package Version'
         required: true
         type: string
+      publish-package:
+        description: 'Publish NuGet package?'
+        required: true
+        type: boolean
 env:
   packageName: 'RB.SharedKernel.MongoDb'
   artifactPath: '/home/runner/work/RB.SharedKernel.MongoDb'
