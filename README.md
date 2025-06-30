@@ -30,21 +30,22 @@ To use these libraries, add the desired NuGet packages to your project:
 
 ```sh
 # For the core ValueObject, Entity, and base extensions
-dotnet add package RB.SharedKernel --version <latest_version>
+dotnet add package RB.SharedKernel --version 0.1.0
 
 # For MediatR related utilities like IResult
-dotnet add package RB.SharedKernel.MediatR --version <latest_version>
+dotnet add package RB.SharedKernel.MediatR --version 0.1.0
 
 # For MongoDB abstractions like IRepository and RepositoryBase
-dotnet add package RB.SharedKernel.MongoDb --version <latest_version>
+dotnet add package RB.SharedKernel.MongoDb --version 0.1.0
 ```
-*Please replace `<latest_version>` with the actual latest version number available on NuGet.*
 
 ## Version
 
-| Version Number | Target Framework | 
-|-----------------|-----------------|
-| [![0.1.0-beta.1.0](https://img.shields.io/badge/0.1.0--beta.1.0-gray?style=flat-square)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/pkgs/nuget/RB.SharedKernel/356462575) | ![.NET 9.0](https://img.shields.io/badge/.NET%209.0-blue?style=flat-square) |
+| Package Name | Version Number | Target Framework |
+|-----------------|-----------------|-----------------|
+| RB.SharedKernel | [![0.1.0](https://img.shields.io/badge/0.1.0-gray?style=flat-square)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/pkgs/nuget/RB.SharedKernel) | ![.NET 9.0](https://img.shields.io/badge/.NET%209.0-blue?style=flat-square) |
+| RB.SharedKernel.MediatR | [![0.1.0](https://img.shields.io/badge/0.1.0-gray?style=flat-square)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/pkgs/nuget/RB.SharedKernel.MediatR) | ![.NET 9.0](https://img.shields.io/badge/.NET%209.0-blue?style=flat-square) |
+| RB.SharedKernel.MongoDb | [![0.1.0](https://img.shields.io/badge/0.1.0-gray?style=flat-square)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/pkgs/nuget/RB.SharedKernel.MongoDb) | ![.NET 9.0](https://img.shields.io/badge/.NET%209.0-blue?style=flat-square) |
 
 ## Usage
 
