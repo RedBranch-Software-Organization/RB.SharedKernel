@@ -7,7 +7,7 @@ on:
         required: true
         type: string
       publish-package:
-        description: "Publish NuGet package?"
+        description: 'Publish NuGet package?'
         required: true
         type: boolean
 env:
@@ -92,8 +92,9 @@ jobs:
         run: |
           git config user.name "GitHub Runner"
           git config user.email ""
-          git tag ${{ needs.get-version.outputs.package-version }} -m "Release ${{ needs.get-version.outputs.package-version }}"
-          git push origin ${{ needs.get-version.outputs.package-version }}
+          $tagName = "${{ env.packageName }}-${{ needs.get-version.outputs.package-version }}"
+          git tag $tagName -m "Release $tagName"
+          git push origin $tagName
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
