@@ -121,7 +121,7 @@ jobs:
         shell: pwsh
         run: |
           $packParams = @(
-            '"${{ matrix.package.project_path }}"',
+            '${{ matrix.package.project_path }}',
             '-p:PackageVersion=${{ needs.get-version.outputs.package-version }}',
             '--configuration Release',
             '--no-build'
