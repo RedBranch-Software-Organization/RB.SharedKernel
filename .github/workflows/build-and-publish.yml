@@ -1,4 +1,4 @@
-nuname: Build and Publish Packages
+name: Build and Publish Packages
 
 on:
   workflow_dispatch:
@@ -124,6 +124,7 @@ jobs:
             '"${{ matrix.package.project_path }}"',
             '-p:PackageVersion=${{ needs.get-version.outputs.version }}',
             '--configuration Release'
+)
           if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
             $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
           }
