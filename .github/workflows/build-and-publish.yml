@@ -121,14 +121,15 @@ jobs:
         shell: pwsh
         run: |
           $packParams = @(
-            '${{ matrix.package.project_path }}',
-            '-p:PackageVersion=${{ needs.get-version.outputs.package-version }}',
+            '"${{ matrix.package.project_path }}"',
+            '-p:PackageVersion=${{ needs.get-version.outputs.version }}',
             '--configuration Release',
             '--no-build'
           )
           if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
             $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
           }
+          echo "{($packParams -join ' ')}"
           dotnet pack ($packParams -join ' ')
 
       - name: Add NuGet Package Source
