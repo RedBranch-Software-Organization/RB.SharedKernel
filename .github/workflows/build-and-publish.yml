@@ -1,0 +1,183 @@
+name: Build and Publish Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      package-version-text:
+        description: 'Package Version (e.g., v1.0.0 or v1.0.0-preview.1)'
+        required: true
+        type: string
+      publish-package:
+        description: 'Publish NuGet packages and create tag?'
+        required: true
+        type: boolean
+
+env:
+  DOTNET_VERSION: |
+    8.0.x
+    9.0.x
+  PACKAGE_NAME_SHARED_KERNEL: 'RB.SharedKernel'
+  PACKAGE_NAME_MEDIATR: 'RB.SharedKernel.MediatR'
+  PACKAGE_NAME_MONGODB: 'RB.SharedKernel.MongoDb'
+  PROJECT_PATH_SHARED_KERNEL: 'src/RB.SharedKernel/RB.SharedKernel.csproj'
+  PROJECT_PATH_MEDIATR: 'src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj'
+  PROJECT_PATH_MONGODB: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
+  NUGET_SOURCE_NAME: 'RedBranch Software Packages'
+  NUGET_SOURCE_URL: 'https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json'
+
+jobs:
+  get-version:
+    name: Set Workflow Variables
+    runs-on: ubuntu-latest
+    outputs:
+      package-version: ${{ steps.package-variables.outputs.package-version }}
+      version: ${{ steps.package-variables.outputs.version }}
+      version-suffix: ${{ steps.package-variables.outputs.version-suffix }}
+    steps:
+      - name: Print Package Version Input
+        shell: pwsh
+        run: |
+          echo "Input Package Version: ${{ github.event.inputs.package-version-text }}"
+
+      - name: Validate Package Version
+        shell: pwsh
+        run: |
+          if ("${{ github.event.inputs.package-version-text }}" -notmatch '^v\d+\.\d+\.\d+(-\w+(\.\d+)*)?$') {
+            echo "Error: Invalid package version format. The package version must be in the format vX.Y.Z or vX.Y.Z-suffix"
+            exit 1
+          } else {
+            echo "Package version format is valid."
+          }
+
+      - id: package-variables
+        name: Set Package Variables
+        shell: pwsh
+        run: |
+          $packageVersionText = "${{ github.event.inputs.package-version-text }}"
+          $packageVersion = $packageVersionText.Substring(1) # Remove 'v'
+          echo "package-version=$packageVersion" >> $env:GITHUB_OUTPUT
+
+          $versionParts = $packageVersion.Split('-', 2)
+          $version = $versionParts[0]
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+          if ($versionParts.Length -gt 1) {
+            $versionSuffix = $versionParts[1]
+            echo "version-suffix=$versionSuffix" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "version-suffix=" >> $env:GITHUB_OUTPUT # Ensure it's empty if no suffix
+          }
+
+          Write-Host "Output package-version: $packageVersion"
+          Write-Host "Output version: $version"
+          Write-Host "Output version-suffix: $versionSuffix"
+
+  build-and-publish-packages:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    needs: get-version
+    strategy:
+      matrix:
+        package:
+          - name: ${{ env.PACKAGE_NAME_SHARED_KERNEL }}
+            project_path: ${{ env.PROJECT_PATH_SHARED_KERNEL }}
+            run_tests: true
+          - name: ${{ env.PACKAGE_NAME_MEDIATR }}
+            project_path: ${{ env.PROJECT_PATH_MEDIATR }}
+            run_tests: false
+          - name: ${{ env.PACKAGE_NAME_MONGODB }}
+            project_path: ${{ env.PROJECT_PATH_MONGODB }}
+            run_tests: false
+    steps:
+      - name: Print Variables
+        run: |
+          echo "Package Version Input: ${{ github.event.inputs.package-version-text }}"
+          echo "Parsed Package Version: ${{ needs.get-version.outputs.package-version }}"
+          echo "Base Version: ${{ needs.get-version.outputs.version }}"
+          echo "Version Suffix: ${{ needs.get-version.outputs.version-suffix }}"
+          echo "Publish Packages: ${{ github.event.inputs.publish-package }}"
+          echo "Current Package: ${{ matrix.package.name }}"
+          echo "Project Path: ${{ matrix.package.project_path }}"
+
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Dependencies for ${{ matrix.package.name }}
+        run: dotnet restore "${{ matrix.package.project_path }}"
+
+      - name: Build ${{ matrix.package.name }}
+        run: dotnet build "${{ matrix.package.project_path }}" --configuration Release --no-restore
+
+      - name: Run Unit Tests for ${{ matrix.package.name }}
+        if: matrix.package.run_tests == true
+        run: dotnet test # This will run tests for the entire solution. Adjust if needed for project-specific tests.
+
+      - name: Pack ${{ matrix.package.name }}
+        shell: pwsh
+        run: |
+          $packParams = @(
+            '"${{ matrix.package.project_path }}"',
+            '-p:PackageVersion=${{ needs.get-version.outputs.package-version }}',
+            '--configuration Release',
+            '--no-build'
+          )
+          if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
+            $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
+          }
+          dotnet pack ($packParams -join ' ')
+
+      - name: Add NuGet Package Source
+        if: github.event.inputs.publish-package == 'true'
+        run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name "${{ env.NUGET_SOURCE_NAME }}" "${{ env.NUGET_SOURCE_URL }}"
+
+      - name: Push ${{ matrix.package.name }}
+        if: github.event.inputs.publish-package == 'true'
+        run: |
+          $NUGET_FILE_PATH_BASE="src/${{ matrix.package.name }}/bin/Release/${{ matrix.package.name }}.${{ needs.get-version.outputs.package-version }}"
+          if [ -z "${{ needs.get-version.outputs.version-suffix }}" ]; then
+            NUGET_FILE_PATH="${NUGET_FILE_PATH_BASE}.nupkg"
+          else
+            NUGET_FILE_PATH="${NUGET_FILE_PATH_BASE}-${{ needs.get-version.outputs.version-suffix }}.nupkg"
+          fi
+          echo "Pushing $NUGET_FILE_PATH"
+          dotnet nuget push "$NUGET_FILE_PATH" --api-key ${{ secrets.GITHUB_TOKEN }} --source "${{ env.NUGET_SOURCE_NAME }}" --skip-duplicate
+
+      - name: Upload Artifact for ${{ matrix.package.name }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.package.name }}.${{ needs.get-version.outputs.package-version }}
+          path: |
+            src/${{ matrix.package.name }}/bin/Release/*
+          overwrite: true
+
+  create-and-push-tag:
+    name: Create and Push Tag
+    runs-on: ubuntu-latest
+    needs: [get-version, build-and-publish-packages]
+    if: github.event.inputs.publish-package == 'true'
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required to push tags
+
+      - name: Create Git Tag
+        shell: pwsh
+        run: |
+          $tagName = "${{ github.event.inputs.package-version-text }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag $tagName -m "Release $tagName"
+          echo "Created tag $tagName"
+
+      - name: Push Git Tag
+        shell: pwsh
+        run: |
+          $tagName = "${{ github.event.inputs.package-version-text }}"
+          git push origin $tagName
+          echo "Pushed tag $tagName to origin"
