@@ -1,4 +1,4 @@
-name: Build and Publish Packages
+nuname: Build and Publish Packages
 
 on:
   workflow_dispatch:
@@ -123,14 +123,11 @@ jobs:
           $packParams = @(
             '"${{ matrix.package.project_path }}"',
             '-p:PackageVersion=${{ needs.get-version.outputs.version }}',
-            '--configuration Release',
-            '--no-build'
-          )
+            '--configuration Release'
           if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
             $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
           }
-          echo "{($packParams -join ' ')}"
-          dotnet pack ($packParams -join ' ')
+          dotnet pack $packParams
 
       - name: Add NuGet Package Source
         if: github.event.inputs.publish-package == 'true'
