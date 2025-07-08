@@ -120,16 +120,11 @@ jobs:
       - name: Pack ${{ matrix.package.name }}
         shell: pwsh
         run: |
-          $packParams = @(
-            '"${{ matrix.package.project_path }}"',
-            '-p:PackageVersion=${{ needs.get-version.outputs.version }}',
-            '--configuration Release',
-            '--no-build'
-          )
-          if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
-            $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
-          }
-          dotnet pack $packParams
+          if [ -z "${{ needs.get-version.outputs.version-suffix }}" ]; then
+            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --configuration Release
+          else
+            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
+          fi
 
       - name: Add NuGet Package Source
         if: github.event.inputs.publish-package == 'true'
