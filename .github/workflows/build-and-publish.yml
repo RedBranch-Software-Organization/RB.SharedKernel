@@ -79,14 +79,14 @@ jobs:
     strategy:
       matrix:
         package:
-          - name: ${{ env.PACKAGE_NAME_SHARED_KERNEL }}
-            project_path: ${{ env.PROJECT_PATH_SHARED_KERNEL }}
+          - name: 'RB.SharedKernel'
+            project_path: 'src/RB.SharedKernel/RB.SharedKernel.csproj'
             run_tests: true
-          - name: ${{ env.PACKAGE_NAME_MEDIATR }}
-            project_path: ${{ env.PROJECT_PATH_MEDIATR }}
+          - name: 'RB.SharedKernel.MediatR'
+            project_path: 'src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj'
             run_tests: false
-          - name: ${{ env.PACKAGE_NAME_MONGODB }}
-            project_path: ${{ env.PROJECT_PATH_MONGODB }}
+          - name: 'RB.SharedKernel.MongoDb'
+            project_path: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
             run_tests: false
     steps:
       - name: Print Variables
