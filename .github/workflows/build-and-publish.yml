@@ -123,8 +123,9 @@ jobs:
           $packParams = @(
             '"${{ matrix.package.project_path }}"',
             '-p:PackageVersion=${{ needs.get-version.outputs.version }}',
-            '--configuration Release'
-)
+            '--configuration Release',
+            '--no-build'
+          )
           if (-not [string]::IsNullOrEmpty('${{ needs.get-version.outputs.version-suffix }}')) {
             $packParams += '--version-suffix ${{ needs.get-version.outputs.version-suffix }}'
           }
