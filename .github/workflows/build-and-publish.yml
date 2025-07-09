@@ -130,15 +130,7 @@ jobs:
 
       - name: Push ${{ matrix.package.name }}
         if: github.event.inputs.publish-package == 'true'
-        run: |
-          $NUGET_FILE_PATH_BASE="src/${{ matrix.package.name }}/bin/Release/${{ matrix.package.name }}.${{ needs.get-version.outputs.package-version }}"
-          if [ -z "${{ needs.get-version.outputs.version-suffix }}" ]; then
-            NUGET_FILE_PATH="${NUGET_FILE_PATH_BASE}.nupkg"
-          else
-            NUGET_FILE_PATH="${NUGET_FILE_PATH_BASE}-${{ needs.get-version.outputs.version-suffix }}.nupkg"
-          fi
-          echo "Pushing $NUGET_FILE_PATH"
-          dotnet nuget push "$NUGET_FILE_PATH" --api-key ${{ secrets.GITHUB_TOKEN }} --source "${{ env.NUGET_SOURCE_NAME }}" --skip-duplicate
+        run: dotnet nuget push "src/${{ matrix.package.name }}/bin/Release/${{ matrix.package.name }}.${{ needs.get-version.outputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "${{ env.NUGET_SOURCE_NAME }}" --skip-duplicate
 
       - name: Upload Artifact for ${{ matrix.package.name }}
         uses: actions/upload-artifact@v4
