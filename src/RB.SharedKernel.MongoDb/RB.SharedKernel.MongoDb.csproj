@@ -5,6 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>91a6b41f-954e-4640-a0de-ad5ab976b8be</UserSecretsId>
+    <PackageId>RB.SharedKernel.MongoDb</PackageId>
+    <Authors>RedBranch Software</Authors>
+    <Company>RedBranch Software</Company>
+    <PackageDescription>Package for MongoDb</PackageDescription>
+    <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
