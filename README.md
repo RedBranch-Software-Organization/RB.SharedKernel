@@ -2,9 +2,7 @@
 
 Repository contains custom base classes that you can use as a base for your domain entities and value objects
 
-[![RB.SharedKernel](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel.yml/badge.svg?branch=master)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel.yml)  
-[![RB.SharedKernel.MediatR](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel-mediatr.yml/badge.svg?branch=master)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel-mediatr.yml)  
-[![RB.SharedKernel.MongoDb](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel-mongodb.yml/badge.svg?branch=master)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-rb-sharedkernel-mongodb.yml)
+[![RB.SharedKernel](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml/badge.svg?branch=master)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml)
 
 - [RB.SharedKernel](#rbsharedkernel)
   - [Install](#install)

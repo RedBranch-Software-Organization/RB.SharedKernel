@@ -166,3 +166,20 @@ jobs:
           $tagName = "${{ github.event.inputs.package-version-text }}"
           git push origin $tagName
           echo "Pushed tag $tagName to origin"
+
+  publish-release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs: [get-version, create-and-push-tag] # Depends on tag creation
+    if: |
+      needs.get-version.outputs.version-suffix == '' &&
+      github.event.inputs.publish-package == 'true'
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.package-version-text }}
+          name: Release ${{ github.event.inputs.package-version-text }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
