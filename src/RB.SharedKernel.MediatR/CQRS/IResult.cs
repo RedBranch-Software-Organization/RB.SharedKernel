@@ -1,7 +1,6 @@
-namespace RB.SharedKernel.MediatR.CQRS
+namespace RB.SharedKernel.MediatR.CQRS;
+
+public interface IResult
 {
-    public interface IResult
-    {
-        
-    }
+
 }
