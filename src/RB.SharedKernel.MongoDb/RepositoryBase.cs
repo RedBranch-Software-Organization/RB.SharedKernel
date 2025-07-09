@@ -7,7 +7,7 @@ namespace RB.SharedKernel.MongoDb
         where TIdentifier : notnull
     {
         public abstract string CollectionName { get; }
-        private readonly IMongoDatabase _database = database;
+        public readonly IMongoDatabase _database = database;
 
         public async Task<IList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
