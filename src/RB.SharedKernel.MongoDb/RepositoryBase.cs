@@ -7,12 +7,12 @@ namespace RB.SharedKernel.MongoDb
         where TIdentifier : notnull
     {
         public abstract string CollectionName { get; }
-        public readonly IMongoDatabase _database = database;
+        public readonly IMongoDatabase Database = database;
 
         public async Task<IList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var filter = Builders<TEntity>.Filter.Empty;
-            return await _database.GetCollection<TEntity>(CollectionName)
+            return await Database.GetCollection<TEntity>(CollectionName)
                 .Find(filter)
                 .ToListAsync(cancellationToken);
         }
@@ -23,7 +23,7 @@ namespace RB.SharedKernel.MongoDb
                 throw new ArgumentException("Identifier cannot be the default value.", nameof(id));
 
             var filter = Builders<TEntity>.Filter.Eq("_id", id);
-            return _database.GetCollection<TEntity>(CollectionName)
+            return Database.GetCollection<TEntity>(CollectionName)
                 .Find(filter)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -33,7 +33,7 @@ namespace RB.SharedKernel.MongoDb
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
 
-            return _database.GetCollection<TEntity>(CollectionName)
+            return Database.GetCollection<TEntity>(CollectionName)
                 .InsertOneAsync(entity, cancellationToken: cancellationToken)
                 .ContinueWith(_ => entity, cancellationToken);
         }
@@ -44,7 +44,7 @@ namespace RB.SharedKernel.MongoDb
                 throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
 
             var filter = Builders<TEntity>.Filter.Eq("_id", entity.Id);
-            return _database.GetCollection<TEntity>(CollectionName)
+            return Database.GetCollection<TEntity>(CollectionName)
                 .FindOneAndReplaceAsync(filter, entity, cancellationToken: cancellationToken);
         }
 
@@ -54,7 +54,7 @@ namespace RB.SharedKernel.MongoDb
                 throw new ArgumentException("Identifier cannot be the default value.", nameof(id));
 
             var filter = Builders<TEntity>.Filter.Eq("_id", id);
-            return _database.GetCollection<TEntity>(CollectionName)
+            return Database.GetCollection<TEntity>(CollectionName)
                 .DeleteOneAsync(filter, cancellationToken: cancellationToken)
                 .ContinueWith(task => task.Result.DeletedCount > 0, cancellationToken);
         }
