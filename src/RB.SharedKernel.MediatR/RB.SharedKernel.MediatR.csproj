@@ -4,6 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>RB.SharedKernel.MediatR</PackageId>
+    <Authors>RedBranch Software</Authors>
+    <Company>RedBranch Software</Company>
+    <PackageDescription>Package containing CQRS extension for MediatR</PackageDescription>
+    <RepositoryUrl>https://github.com/RedBranch-Software-Organization/RB.SharedKernel.git</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
