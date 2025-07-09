@@ -2,7 +2,7 @@
 
 Repository contains custom base classes that you can use as a base for your domain entities and value objects
 
-[![RB.SharedKernel](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml/badge.svg?branch=main)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml)
+[![RB.SharedKernel](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml/badge.svg?branch=master)](https://github.com/RedBranch-Software-Organization/RB.SharedKernel/actions/workflows/build-and-publish.yml)
 
 - [RB.SharedKernel](#rbsharedkernel)
   - [Install](#install)
