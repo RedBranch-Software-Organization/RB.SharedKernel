@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0;net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>91a6b41f-954e-4640-a0de-ad5ab976b8be</UserSecretsId>
+
+    <OutputType>Library/OutputType>
     <PackageId>RB.SharedKernel.MongoDb</PackageId>
     <Authors>RedBranch Software</Authors>
     <Company>RedBranch Software</Company>
