@@ -1,0 +1,15 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj" />
+    <Project Path="src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj" />
+    <Project Path="src/RB.SharedKernel/RB.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/RB.SharedKernel.UnitTests/RB.SharedKernel.UnitTests.csproj" />
+  </Folder>
+</Solution>

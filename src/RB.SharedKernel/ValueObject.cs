@@ -1,8 +1,9 @@
 namespace RB.SharedKernel;
 
 [Serializable]
-public abstract class ValueObject : IComparable, IComparable<ValueObject>
+public abstract class ValueObject<T> : IComparable, IComparable<ValueObject<T>>
 {
+    public abstract T Value { get; }
     protected abstract IEnumerable<object> GetEqualityComponents();
 
     public override bool Equals(object? obj)
@@ -10,7 +11,7 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
         if (obj == null || obj.GetType() != GetType())
             return false;
 
-        var valueObject = (ValueObject)obj;
+        var valueObject = (ValueObject<T>)obj;
         return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
     }
 
@@ -23,7 +24,7 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
         if (obj == null) return 1;
         if (GetType() != obj.GetType()) return 1;
 
-        var other = (ValueObject)obj;
+        var other = (ValueObject<T>)obj;
 
         var thisComponents = GetEqualityComponents().GetEnumerator();
         var otherComponents = other.GetEqualityComponents().GetEnumerator();
@@ -38,10 +39,10 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
         return 0;
     }
 
-    public int CompareTo(ValueObject? other)
+    public int CompareTo(ValueObject<T>? other)
         => CompareTo(other as object);
 
-    public static bool operator ==(ValueObject a, ValueObject b)
+    public static bool operator ==(ValueObject<T> a, ValueObject<T> b)
     {
         if (a is null && b is null)
             return true;
@@ -52,6 +53,18 @@ public abstract class ValueObject : IComparable, IComparable<ValueObject>
         return a.Equals(b);
     }
 
-    public static bool operator !=(ValueObject a, ValueObject b)
+    public static bool operator !=(ValueObject<T> a, ValueObject<T> b)
         => !(a == b);
+
+    public static bool operator <(ValueObject<T> left, ValueObject<T> right)
+        => left is null ? right is not null : left.CompareTo(right) < 0;
+
+    public static bool operator <=(ValueObject<T> left, ValueObject<T> right)
+        => left is null || left.CompareTo(right) <= 0;
+
+    public static bool operator >(ValueObject<T> left, ValueObject<T> right)
+        => left is not null && left.CompareTo(right) > 0;
+
+    public static bool operator >=(ValueObject<T> left, ValueObject<T> right)
+         => left is null ? right is null : left.CompareTo(right) >= 0;
 }
