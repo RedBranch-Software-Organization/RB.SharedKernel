@@ -1,8 +1,5 @@
 namespace RB.SharedKernel.MediatR.Command;
-
+public interface ICommand : IRequest { }
 public interface ICommand<out TCommandResponse> : IRequest<TCommandResponse>
-    where TCommandResponse : ICommandResponse
-{ }
-
-public interface ICommand : IRequest 
+where TCommandResponse : ICommandResponse 
 { }
