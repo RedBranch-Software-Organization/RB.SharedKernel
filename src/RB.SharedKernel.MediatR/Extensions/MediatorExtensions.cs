@@ -2,7 +2,7 @@ namespace RB.SharedKernel.MediatR.Extensions;
 
 public static class MediatorExtensions
 {
-    public static async Task<TResponse> SendQueryAsync<TResponse>(this IMediator mediator, IQuery<TResponse> query) where TResponse : IQueryResponse
+    public static async Task<TResult> SendQueryAsync<TResult>(this IMediator mediator, IQuery<TResult> query) where TResult : IQueryResult
     {
         ArgumentNullException.ThrowIfNull(mediator);
         ArgumentNullException.ThrowIfNull(query);
@@ -16,7 +16,7 @@ public static class MediatorExtensions
         await mediator.Send(query);
     }
 
-    public static async Task<TResponse> SendCommandAsync<TResponse>(this IMediator mediator, ICommand<TResponse> command) where TResponse : ICommandResponse
+    public static async Task<TResult> SendCommandAsync<TResult>(this IMediator mediator, ICommand<TResult> command) where TResult : ICommandResult
     {
         ArgumentNullException.ThrowIfNull(mediator);
         ArgumentNullException.ThrowIfNull(command);

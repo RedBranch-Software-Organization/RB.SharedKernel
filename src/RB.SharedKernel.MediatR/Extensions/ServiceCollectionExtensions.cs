@@ -7,6 +7,10 @@ public static class ServiceCollectionExtensions
 {
     public static void AddSharedKernelMediatR(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<ICommandHandler<ICommand>>()
+                                      .RegisterServicesFromAssemblyContaining<ICommandHandler<ICommand<ICommandResult>, ICommandResult>>()
+                                      .RegisterServicesFromAssemblyContaining<IQueryHandler<IQuery>>()
+                                      .RegisterServicesFromAssemblyContaining<IQueryHandler<IQuery<IQueryResult>, IQueryResult>>()
+        );
     }
 }
