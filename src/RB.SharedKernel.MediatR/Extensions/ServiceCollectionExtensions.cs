@@ -11,6 +11,7 @@ public static class ServiceCollectionExtensions
                                       .RegisterServicesFromAssemblyContaining<ICommandHandler<ICommand<ICommandResult>, ICommandResult>>()
                                       .RegisterServicesFromAssemblyContaining<IQueryHandler<IQuery>>()
                                       .RegisterServicesFromAssemblyContaining<IQueryHandler<IQuery<IQueryResult>, IQueryResult>>()
+                                      .RegisterServicesFromAssembly(Assembly.GetCallingAssembly());
         );
     }
 }
