@@ -18,10 +18,10 @@ env:
     9.0.x
   PACKAGE_NAME_SHARED_KERNEL: 'RB.SharedKernel'
   PACKAGE_NAME_MEDIATR: 'RB.SharedKernel.MediatR'
-  PACKAGE_NAME_MONGODB: 'RB.SharedKernel.MongoDb'
+  # PACKAGE_NAME_MONGODB: 'RB.SharedKernel.MongoDb'
   PROJECT_PATH_SHARED_KERNEL: 'src/RB.SharedKernel/RB.SharedKernel.csproj'
   PROJECT_PATH_MEDIATR: 'src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj'
-  PROJECT_PATH_MONGODB: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
+  # PROJECT_PATH_MONGODB: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
   NUGET_SOURCE_NAME: 'RedBranch Software Packages'
   NUGET_SOURCE_URL: 'https://nuget.pkg.github.com/RedBranch-Software-Organization/index.json'
 
@@ -85,9 +85,9 @@ jobs:
           - name: 'RB.SharedKernel.MediatR'
             project_path: 'src/RB.SharedKernel.MediatR/RB.SharedKernel.MediatR.csproj'
             run_tests: false
-          - name: 'RB.SharedKernel.MongoDb'
-            project_path: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
-            run_tests: false
+          # - name: 'RB.SharedKernel.MongoDb'
+          #   project_path: 'src/RB.SharedKernel.MongoDb/RB.SharedKernel.MongoDb.csproj'
+          #   run_tests: false
     steps:
       - name: Print Variables
         run: |
