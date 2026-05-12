@@ -1,6 +1,18 @@
 ﻿namespace RB.SharedKernel;
 
-public abstract class Entity<TId>(TId id)
+public abstract class Entity 
 {
-    public TId Id { get; set; } = id;
+    public int Id { get; set; }
+}
+
+public abstract class Entity<TId>
+  where TId : struct, IEquatable<TId>
+{
+    public TId Id { get; set; } = default!;
+}
+
+public abstract class Entity<T, TId>
+  where T : Entity<T, TId>
+{
+    public TId Id { get; set; } = default!;
 }
