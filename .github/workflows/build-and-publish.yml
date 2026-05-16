@@ -115,14 +115,14 @@ jobs:
 
       - name: Run Unit Tests for ${{ matrix.package.name }}
         if: matrix.package.run_tests == true
-        run: dotnet test # This will run tests for the entire solution. Adjust if needed for project-specific tests.
+        run: dotnet test --no-build # This will run tests for the entire solution. Adjust if needed for project-specific tests.
 
       - name: Pack ${{ matrix.package.name }}
         run: |
           if [ -z "${{ needs.get-version.outputs.version-suffix }}" ]; then
-            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --configuration Release
+            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --configuration Release --no-build
           else
-            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release
+            dotnet pack "${{ matrix.package.project_path }}" -p:PackageVersion=${{ needs.get-version.outputs.package-version }} --version-suffix=${{ needs.get-version.outputs.version-suffix }} --configuration Release --no-build
           fi
       - name: Add NuGet Package Source
         if: github.event.inputs.publish-package == 'true'
