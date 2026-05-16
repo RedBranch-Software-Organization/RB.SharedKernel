@@ -147,6 +147,8 @@ jobs:
   create-and-push-tag:
     name: Create and Push Tag
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     needs: [get-version, build-and-publish-packages]
     if: github.event.inputs.publish-package == 'true'
     steps:
@@ -174,6 +176,8 @@ jobs:
   publish-release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write 
     needs: [get-version, create-and-push-tag] # Depends on tag creation
     if: |
       needs.get-version.outputs.version-suffix == '' &&
